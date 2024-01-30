@@ -16,18 +16,9 @@ async function connection(){
 };
 
 const todoSchema = new mongoose.Schema({
-    title:{
-        type:String,
-        required:true,
-    },
-    description:{
-        type:String,
-        required:true,
-    },
-    completed:{
-        type:Boolean,
-        value:false,
-    }
+    title:String,
+    description:String,
+    completed:Boolean
 });
 
 const Todo = mongoose.model('Todo',todoSchema);

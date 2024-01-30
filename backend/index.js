@@ -100,7 +100,8 @@ app.post('/login', async (req,res)=>{
         }
         const token = jwt.sign({ userId:user._id },JWT_SECRET,{ expiresIn: '1hr' })
         res.status(201).json({
-            message: "logged in successfully"
+            message: "logged in successfully",
+            token:token
         })
     }
     catch(error){
@@ -121,10 +122,13 @@ app.post('/todo',authChecker,async (req,res)=>{
         });
     }
     try{
-        Todo.create({
+        await Todo.create({
             title:req.body.title,
             description:req.body.description,
             completed:req.body.completed
+        })
+        res.status(201).json({
+            message:"Todo created"
         })
     }
     catch(error){

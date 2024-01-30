@@ -14,7 +14,9 @@ const authChecker = (req,res,next) => {
     }
     jwt.verify(token,JWT_SECRET,(err,decoded)=>{
         if(err){
-            return res.status(403);
+            return res.status(403).json({
+                message:"JWT not variefied"
+            });
         }
         req.userId = decoded.userId;
         next();
