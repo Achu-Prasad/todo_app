@@ -7,7 +7,9 @@ const bodyParser = require ('body-parser');
 const bcrypt = require ('bcrypt');
 const {User} = require('./mongo');
 const {JWT_SECRET} = require('./authetication/config');
-const {Todo} = require('./todoSchema')
+const {Todo} = require('./todoSchema');
+const {updateTodo,createTodo} = require('./zodTodo');
+const authChecker = require('./middlewares/authChecker');
 
 
 const app = express();
@@ -30,7 +32,7 @@ const signupBody = z.object({
 // post request for signing up
 // STEPS
 //1. first try to safeparse it if its not parsing that means something in input is not correct as in the schema
-//2. if its parsed check for alredy used email if email is used the user already signedup 
+//2. if its parsed check for used email if email is used the user already signedup 
 //3. if the email is not taken create user based on schema, hash password using bcrypt, provide tocken using jwt
 
 app.post('/signup',async (req,res)=>{
@@ -64,7 +66,8 @@ app.post('/signup',async (req,res)=>{
         }
     }
 });
-//LOG IN FUcntionality
+
+//LOG IN Fucntionality
 //STEP 1 zod validation 
 //2. if zod validation completed check user exists or not 
 //3. if user exists check password is valid or not
@@ -105,6 +108,29 @@ app.post('/login', async (req,res)=>{
         res.status(500).json({message: "error logging in", error: error.message})
     }
 
+});
+
+//TODO Backend Logic 
+//STEP 1. make a Middleware and import it and use it in every todomaking requests
+
+app.post('/todo',authChecker,async (req,res)=>{
+    const {success} = createTodo.safeParse(req.body);
+    if(!success){
+        return res.status(403).json({
+            message:"wrong todo input"
+        });
+    }
+    try{
+        Todo.create({
+            title:req.body.title,
+            description:req.body.description,
+            completed:req.body.completed
+        })
+    }
+    catch(error){
+        console.error("Todo making error",error)
+        res.status(500).json({message:"error making todo",error:error.message})
+    }
 })
 
 

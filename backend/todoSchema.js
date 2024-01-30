@@ -15,7 +15,7 @@ async function connection(){
     }
 };
 
-const todoSchema = mongoose.Schema({
+const todoSchema = new mongoose.Schema({
     title:{
         type:String,
         required:true,

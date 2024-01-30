@@ -1,8 +1,14 @@
-const zod = require('zod');
+const {z} = require('zod');
 
-const updateTodo = zod.object({
-    title:zod.string().optional(),
-    description:zod.string().optional(),
-    completed:zod.boolean()
+const updateTodo = z.object({
+    title:z.string().optional(),
+    description:z.string().optional(),
+    completed:z.boolean()
 })
-const 
+const createTodo = z.object({
+    title:z.string(),
+    description:z.string(),
+    completed:z.boolean(),
+});
+
+module.exports = {updateTodo,createTodo}
