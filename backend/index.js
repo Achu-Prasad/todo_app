@@ -122,10 +122,12 @@ app.post('/todo',authChecker,async (req,res)=>{
         });
     }
     try{
+        const userId = req.userId;
         await Todo.create({
             title:req.body.title,
             description:req.body.description,
-            completed:req.body.completed
+            completed:req.body.completed,
+            userId:userId, 
         })
         res.status(201).json({
             message:"Todo created"
@@ -135,6 +137,23 @@ app.post('/todo',authChecker,async (req,res)=>{
         console.error("Todo making error",error)
         res.status(500).json({message:"error making todo",error:error.message})
     }
+})
+app.get('/todo',authChecker,async (req,res) => {
+    const userId = req.userId;
+    try{
+        const todos = await Todo.find({userId});
+        res.status(201).json({todos})
+    }
+    catch(error){
+        res.status(500).json({
+            message:"cant get todos some issue",
+            error:error
+        })
+    }
+})
+
+app.put('/todo',authChecker, async (req,res) => {
+
 })
 
 
