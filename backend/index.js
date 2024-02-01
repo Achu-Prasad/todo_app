@@ -142,18 +142,37 @@ app.get('/todo',authChecker,async (req,res) => {
     const userId = req.userId;
     try{
         const todos = await Todo.find({userId});
-        res.status(201).json({todos})
+        res.status(200).json({todos})
     }
     catch(error){
         res.status(500).json({
             message:"cant get todos some issue",
-            error:error
+            error:error.message
         })
     }
 })
 
-app.put('/todo',authChecker, async (req,res) => {
+app.put('/todo/:todoId',authChecker, async (req,res) => {
+    const {success} = updateTodo.safeParse(req.body)
+    if(!success){
+        return res.status(400).json({
+            message: " wrong input cant change Todo",
+        })
+    }
+    try{
+        const todoId = req.params.todoId
+        const userId = req.userId
 
+        const updateTodoUser = await Todo.findOneAndUpdate({_id:todoId,userId})
+        if(!updateTodoUser){
+            return res.status(400).json({
+                message: "cant find todo/ todo not exists"
+            })
+        }
+    }
+    catch(error){
+
+    }
 })
 
 
