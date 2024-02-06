@@ -2,8 +2,6 @@ const express = require('express');
 const cors = require ('cors');
 const jwt = require ('jsonwebtoken');
 const {z, string} = require ('zod');
-const mongoose = require ('mongoose');
-const bodyParser = require ('body-parser');
 const bcrypt = require ('bcrypt');
 const {User} = require('./mongo');
 const {JWT_SECRET} = require('./authetication/config');
@@ -98,8 +96,8 @@ app.post('/login', async (req,res)=>{
                 message:"invalid Credentials"
             })
         }
-        const token = jwt.sign({ userId:user._id },JWT_SECRET,{ expiresIn: '1hr' })
-        res.status(201).json({
+        const token = jwt.sign({ userId:user._id },JWT_SECRET,{ expiresIn: '2hr' })
+        res.status(200).json({
             message: "logged in successfully",
             token:token
         })
@@ -151,7 +149,7 @@ app.get('/todo',authChecker,async (req,res) => {
         })
     }
 })
-
+//for updating todos use put request
 app.put('/todo/:todoId',authChecker, async (req,res) => {
     const {success} = updateTodo.safeParse(req.body)
     if(!success){
@@ -171,6 +169,10 @@ app.put('/todo/:todoId',authChecker, async (req,res) => {
         }
     }
     catch(error){
+        res.status(500).json({
+            message:"cant find todo",
+            error:error.message
+        })
 
     }
 })
