@@ -77,7 +77,7 @@ const Login = () => {
       </form>
 
       <p className=" font-poppins font-lightbold text-[14px] flex justify-center my-4 text-[#959B95]">
-        Forget your something ? <span className="text-[#528C75]"> Reset it !</span>
+        Forgot something ? <span className="text-[#528C75]"> Reset it !</span>
       </p>
 
     </div>
