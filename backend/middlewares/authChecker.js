@@ -9,7 +9,7 @@ const authChecker = (req,res,next) => {
     const token = req.headers.authorization;
     if(!token){
         return res.status(401).json({
-            message:" You are not an autheticated user"
+            message:" You are not an autheticated user please login first"
         })
     }
     jwt.verify(token,JWT_SECRET,(err,decoded)=>{

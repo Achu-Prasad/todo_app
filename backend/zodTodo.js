@@ -8,7 +8,7 @@ const updateTodo = z.object({
 const createTodo = z.object({
     title:z.string(),
     description:z.string(),
-    completed:z.boolean(),
+    completed:z.boolean().optional(),
 });
 
 module.exports = {updateTodo,createTodo}
