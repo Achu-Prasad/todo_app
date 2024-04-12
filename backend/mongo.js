@@ -1,18 +1,17 @@
 const mongoose = require('mongoose');
-const dbURI = "mongodb+srv://achuprasad:QgXCSX4IDTZ60PG5@cluster0.o8v7l5w.mongodb.net/Auth_test";
+require('dotenv').config();
+const dbURI = process.env.DBURI;
 
 connection();
-async function connection(){
-    try{
-        await mongoose.connect(dbURI,{
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        })
+async function connection() {
+    try {
+        await mongoose.connect(dbURI);
+        console.log("MongoDB connected successfully");
+    } catch (error) {
+        console.error("Error connecting to MongoDB:", error);
     }
-    catch(error){
-        console.log(error)
-    }
-};
+}
+
 const userSchema = new mongoose.Schema({
     email:{
         type:String,
